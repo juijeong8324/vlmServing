@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# Model weights (too large for git)
+model/weights/*
+!model/weights/.gitkeep
+
+# Environment variables
+.env
+*.env.local
+
+# Logs
+logs/*
+!logs/.gitkeep
+*.log
+
+# Node
+node_modules/
+
+# Docker
+.docker/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

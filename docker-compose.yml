@@ -1,0 +1,60 @@
+version: "3.9"
+
+services:
+  model-server:
+    build:
+      context: .
+      dockerfile: deploy/docker/Dockerfile.model-server
+    expose:
+      - "8001"
+    env_file:
+      - .env
+    environment:
+      - PORT=8001
+    volumes:
+      - ./model/weights:/app/model/weights
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  backend:
+    build:
+      context: .
+      dockerfile: deploy/docker/Dockerfile.backend
+    expose:
+      - "8000"
+    env_file:
+      - .env
+    environment:
+      - MODEL_SERVER_URL=http://model-server:8001
+    depends_on:
+      - model-server
+
+  frontend:
+    build:
+      context: .
+      dockerfile: deploy/docker/Dockerfile.frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./monitoring/grafana:/var/lib/grafana
+    depends_on:
+      - prometheus

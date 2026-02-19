@@ -1,0 +1,7 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: "vlm-serving"
+    static_configs:
+      - targets: ["vlm-serving:8000"]
