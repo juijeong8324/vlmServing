@@ -4,7 +4,7 @@ import torch
 from loguru import logger
 from PIL import Image
 from qwen_vl_utils import process_vision_info
-from transformers import AutoProcessor, Qwen2VLForConditionalGeneration
+from transformers import AutoProcessor, Qwen2_5_VLForConditionalGeneration
 
 from model_server.config import settings
 
@@ -16,7 +16,7 @@ _DTYPE_MAP = {
 
 class VLMEngine:
     def __init__(self) -> None:
-        self.model: Qwen2VLForConditionalGeneration | None = None
+        self.model: Qwen2_5_VLForConditionalGeneration | None = None
         self.processor: AutoProcessor | None = None
         self._loaded = False
 
@@ -24,7 +24,7 @@ class VLMEngine:
         logger.info(f"Loading model: {settings.model_name}")
         dtype = _DTYPE_MAP[settings.model_dtype]
 
-        self.model = Qwen2VLForConditionalGeneration.from_pretrained(
+        self.model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
             settings.model_name,
             torch_dtype=dtype,
             device_map="auto",

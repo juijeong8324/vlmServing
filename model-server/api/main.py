@@ -27,7 +27,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="VLM Model Server",
-    description="Qwen2-VL 추론 전용 서버",
+    description="Qwen2.5-VL 추론 전용 서버",
     version="1.0.0",
     lifespan=lifespan,
 )
